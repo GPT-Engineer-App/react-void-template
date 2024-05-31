@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Box, Container, Text, VStack, Flex, Spinner, Button, Input, Textarea, FormControl, FormLabel } from '@chakra-ui/react';
+import { Box, Container, Text, VStack, Flex, Spinner, Button, Input, Textarea, FormControl, FormLabel, Link } from '@chakra-ui/react';
 import { useEvents, useAddEvent, useUpdateEvent, useDeleteEvent } from '../integrations/supabase/index.js';
+import { Link as RouterLink } from "react-router-dom";
+import { FaHome, FaInfoCircle, FaCalendarAlt } from "react-icons/fa";
 
 const Events = () => {
   const { data: events, error, isLoading } = useEvents();
@@ -46,12 +48,26 @@ const Events = () => {
   }
 
   return (
-    <Container maxW="container.xl" p={4}>
-      <Box as="main" p={4}>
-        <VStack spacing={4}>
-          <Text fontSize="2xl" fontWeight="bold">Events</Text>
-          <Box p={4} borderWidth="1px" borderRadius="md" width="100%">
-            <FormControl>
+    <Container maxW="container.xl" p={0} bg="gray.50">
+      <Flex as="nav" bg="blue.500" color="white" p={4} justifyContent="space-between" alignItems="center">
+        <Text fontSize="xl" fontWeight="bold">MyApp</Text>
+        <Flex>
+          <Link as={RouterLink} to="/" p={2} _hover={{ textDecoration: "none", bg: "blue.600" }}>
+            <FaHome style={{ marginRight: '8px' }} /> Home
+          </Link>
+          <Link as={RouterLink} to="/about" p={2} _hover={{ textDecoration: "none", bg: "blue.600" }}>
+            <FaInfoCircle style={{ marginRight: '8px' }} /> About
+          </Link>
+          <Link as={RouterLink} to="/events" p={2} _hover={{ textDecoration: "none", bg: "blue.600" }}>
+            <FaCalendarAlt style={{ marginRight: '8px' }} /> Events
+          </Link>
+        </Flex>
+      </Flex>
+      <Box as="main" p={8} bg="white">
+        <VStack spacing={8} align="start">
+          <Text fontSize="4xl" fontWeight="bold">Events</Text>
+          <Box p={6} borderWidth="1px" borderRadius="md" width="100%" bg="gray.100">
+            <FormControl mb={4}>
               <FormLabel>Name</FormLabel>
               <Input
                 value={newEvent.name}
@@ -59,7 +75,7 @@ const Events = () => {
                 placeholder="Event Name"
               />
             </FormControl>
-            <FormControl>
+            <FormControl mb={4}>
               <FormLabel>Date</FormLabel>
               <Input
                 type="date"
@@ -68,7 +84,7 @@ const Events = () => {
                 placeholder="Event Date"
               />
             </FormControl>
-            <FormControl>
+            <FormControl mb={4}>
               <FormLabel>Description</FormLabel>
               <Textarea
                 value={newEvent.description}
@@ -76,16 +92,16 @@ const Events = () => {
                 placeholder="Event Description"
               />
             </FormControl>
-            <Button mt={4} colorScheme="blue" onClick={handleAddEvent}>Add Event</Button>
+            <Button mt={4} colorScheme="teal" onClick={handleAddEvent}>Add Event</Button>
           </Box>
           {events.length === 0 ? (
             <Text>No events available.</Text>
           ) : (
             events.map(event => (
-              <Box key={event.id} p={4} borderWidth="1px" borderRadius="md" width="100%">
+              <Box key={event.id} p={6} borderWidth="1px" borderRadius="md" width="100%" bg="gray.100">
                 {editingEvent?.id === event.id ? (
                   <>
-                    <FormControl>
+                    <FormControl mb={4}>
                       <FormLabel>Name</FormLabel>
                       <Input
                         value={editingEvent.name}
@@ -93,7 +109,7 @@ const Events = () => {
                         placeholder="Event Name"
                       />
                     </FormControl>
-                    <FormControl>
+                    <FormControl mb={4}>
                       <FormLabel>Date</FormLabel>
                       <Input
                         type="date"
@@ -102,7 +118,7 @@ const Events = () => {
                         placeholder="Event Date"
                       />
                     </FormControl>
-                    <FormControl>
+                    <FormControl mb={4}>
                       <FormLabel>Description</FormLabel>
                       <Textarea
                         value={editingEvent.description}
@@ -110,15 +126,15 @@ const Events = () => {
                         placeholder="Event Description"
                       />
                     </FormControl>
-                    <Button mt={4} colorScheme="blue" onClick={() => handleUpdateEvent(editingEvent)}>Update Event</Button>
+                    <Button mt={4} colorScheme="teal" onClick={() => handleUpdateEvent(editingEvent)}>Update Event</Button>
                     <Button mt={4} colorScheme="gray" onClick={() => setEditingEvent(null)}>Cancel</Button>
                   </>
                 ) : (
                   <>
-                    <Text fontSize="xl" fontWeight="bold">{event.name}</Text>
+                    <Text fontSize="2xl" fontWeight="bold">{event.name}</Text>
                     <Text>{new Date(event.date).toLocaleDateString()}</Text>
                     <Text>{event.description}</Text>
-                    <Button mt={4} colorScheme="blue" onClick={() => setEditingEvent(event)}>Edit</Button>
+                    <Button mt={4} colorScheme="teal" onClick={() => setEditingEvent(event)}>Edit</Button>
                     <Button mt={4} colorScheme="red" onClick={() => handleDeleteEvent(event.id)}>Delete</Button>
                   </>
                 )}
@@ -127,6 +143,14 @@ const Events = () => {
           )}
         </VStack>
       </Box>
+      <Flex as="footer" bg="gray.100" p={4} justifyContent="space-between" alignItems="center">
+        <Text fontSize="sm" color="gray.600">© 2023 MyApp. All rights reserved.</Text>
+        <Flex>
+          <Link as={RouterLink} to="/" p={2} _hover={{ textDecoration: "none", color: "blue.500" }}>Home</Link>
+          <Link as={RouterLink} to="/about" p={2} _hover={{ textDecoration: "none", color: "blue.500" }}>About</Link>
+          <Link as={RouterLink} to="/events" p={2} _hover={{ textDecoration: "none", color: "blue.500" }}>Events</Link>
+        </Flex>
+      </Flex>
     </Container>
   );
 };
