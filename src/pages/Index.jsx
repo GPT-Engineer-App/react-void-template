@@ -9,6 +9,7 @@ const Index = () => {
         <Flex>
           <Link as={RouterLink} to="/" p={2} _hover={{ textDecoration: "none", bg: "blue.600" }}>Home</Link>
           <Link as={RouterLink} to="/about" p={2} _hover={{ textDecoration: "none", bg: "blue.600" }}>About</Link>
+          <Link as={RouterLink} to="/events" p={2} _hover={{ textDecoration: "none", bg: "blue.600" }}>Events</Link>
         </Flex>
       </Flex>
       <Box as="main" p={4}>
